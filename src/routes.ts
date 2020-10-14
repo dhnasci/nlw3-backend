@@ -1,7 +1,11 @@
 import { Router } from 'express'
+import multer from 'multer';
+
+import uploadConfig from './config/upload';
 import orphanagesController from './controllers/OrphanagesController';
 
 const routes = Router();
+const upload = multer(uploadConfig);
 
 routes.get('/users', (request, response) => {
   /*
@@ -12,7 +16,8 @@ routes.get('/users', (request, response) => {
   return response.json({message: 'Hello World!'})
 })
 
-routes.post('/orphanages', orphanagesController.create);
+// In register we can upload serveral images
+routes.post('/orphanages', upload.array('images'), orphanagesController.create);
 routes.get('/orphanages', orphanagesController.index);
 routes.get('/orphanages/:id', orphanagesController.show);
 
